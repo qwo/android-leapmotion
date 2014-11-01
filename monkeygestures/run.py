@@ -1,4 +1,6 @@
 # Imports the monkeyrunner modules used by this program
+
+
 from com.android.monkeyrunner import MonkeyRunner, MonkeyDevice
 
 # Connects to the current device, returning a MonkeyDevice object
@@ -10,42 +12,44 @@ device = MonkeyRunner.waitForConnection()
 
 # sets a variable with the package's internal name
 
-device.touch(100,500, 'DOWN')
-device.touch(300,500, 'MOVE')
-device.touch(300,400, 'MOVE')
-device.touch(300,400, 'UP')
+#Controller for MotoG
 
-device.touch(100,500, 'RIGHT')
-device.touch(100,500, 'RIGHT')
-device.touch(100,500, 'RIGHT')
-device.touch(100,500, 'RIGHT')
 
-device.touch(300,400, 'UP')
-device.touch(300,400, 'UP')
-device.touch(100,800, 'UP')
-device.touch(300,400, 'UP')
-device.touch(300,400, 'UP')
-device.touch(300,400, 'UP')
-device.touch(300,400, 'UP')
+#! /usr/bin/env monkeyrunner
 
-device.drag((100,100),(100,400),0.15,8)
-device.drag((100,100),(100,400),0.15,9)
-device.drag((100,100),(100,400),0.15,5)
+# import the MonkeyRunners modules used by this program
+from com.android.monkeyrunner import MonkeyRunner, MonkeyDevice, MonkeyImage
 
+def startbrowser(d):
+	d.broadcastIntent("http://www.google.com/", "ACTION_MAIN")
+	d.startActivity(component="com.android.browser/.BrowserActivity")
+
+def main():
+   	print "Start"
+	# Connect to the current device returning the MonkeyDevice object
+
+    #MonkeyRunner.alert("Starting Activity", "monkeyrunner", "OK")
+
+if not device:
+    print "Couldn't get connection"
+    sys.exit()
+
+    print "Found device"
+    startBrowser(device)
+    MonkeyRunner.sleep(10.0)
+
+main()
 # package = 'com.google.android.youtube'
 #
 # # sets a variable with the name of an Activity in the package
 # activity = 'com.google.android.youtube.MainActivity'
 #
 
-# Start the application
-#device.startActivity (component = 'com.google.android.youtube / .MainActivity')
+#Start the application
+device.startActivity (component = 'com.google.android.youtube / .MainActivity')
 
-# # sets the name of the component to start
-# runComponent = package + '/' + activity
+# sets the name of the component to start
+runComponent = package + '/' + activity
 #
-# # Runs the component
-# device.startActivity(component=runComponent)
-#
-# # Presses the Menu button
-# device.press('KEYCODE_MENU', MonkeyDevice.DOWN_AND_UP)
+# Runs the component
+device.startActivity(component=runComponent)
