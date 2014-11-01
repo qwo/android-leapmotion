@@ -7,10 +7,6 @@ from com.android.monkeyrunner import MonkeyRunner, MonkeyDevice
 device = MonkeyRunner.waitForConnection()
 
 # Installs the Android package. Notice that this method returns a boolean, so you can test
-# to see if the installation worked.
-#device.installPackage('myproject/bin/MyApplication.apk')
-
-# sets a variable with the package's internal name
 
 #Controller for MotoG
 
