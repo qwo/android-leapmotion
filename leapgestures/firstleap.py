@@ -1,6 +1,6 @@
 import os, sys, inspect, thread, time
 src_dir = os.path.dirname(inspect.getfile(inspect.currentframe()))
-arch_dir = './x64'
+arch_dir = './lib'
 sys.path.insert(0, os.path.abspath(os.path.join(src_dir, arch_dir)))
 
 import Leap
@@ -8,6 +8,12 @@ from Leap import CircleGesture, KeyTapGesture, ScreenTapGesture, SwipeGesture
 
 import subprocess
 from subprocess import call
+
+import socket
+HOST = 'localhost'
+PORT = 5000              # The same port as used by the server
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+s.connect((HOST, PORT))
 
 class FirstListenerInline(Leap.Listener):
     gesture_by_finger = {}
@@ -37,10 +43,13 @@ class FirstListenerInline(Leap.Listener):
                 mmt_name = self.find_movement(self.gesture_by_finger)
                 self.gesture_by_finger = {}
                 print "ERASED"
-                name =  os.path.abspath('relay_'+mmt_name+'.py')
-                print name
-                x = call(['C:\\adt-bundle-windows-x86_64-20140702\\sdk\\tools\\monkeyrunner.bat', name])
-                x.stdin.write('\n')
+                # name =  os.path.abspath('relay_'+mmt_name+'.py')
+                # print name
+                # x = call(['C:\\adt-bundle-windows-x86_64-20140702\\sdk\\tools\\monkeyrunner.bat', name])
+                # x.stdin.write('\n')
+                action = mmt_name
+                s.sendall(action)
+
 
     def find_movement(self, gestures):
         print "Got gestures: ", len(gestures)
@@ -65,37 +74,37 @@ class FirstListenerInline(Leap.Listener):
         if endx >= 0 and endy >= 0:
             if abs(endx) > abs(endy):
                 print "FORWARD"
-                return 'right'
+                return '0'
             else:
                 print "UPWARD"
-                return 'top'
+                return '2'
         elif endx < 0 and endy <0:
             if abs(endx) > abs(endy):
                 print "BACKWARD"
-                return 'left'
+                return '1'
             else:
                 print "DOWNWARD"
-                return 'down'
+                return '3'
         elif endx < 0 and endy > 0:
             if abs(endx) > abs(endy):
                 print "BACKWARD"
-                return 'left'
+                return '1'
             else:
                 print "UPWARD"
-                return 'top'
+                return '2'
         elif endx > 0 and endy < 0:
             if abs(endx) > abs(endy):
                 print "FORWARD"
-                return 'right'
+                return '0'
             else:
                 print "DOWNWARD"
-                return 'down'
+                return '3'
 
 def main():
     # Create a sample listener and controller
     listener = FirstListenerInline()
     controller = Leap.Controller()
-    controller.config.set("Gesture.Swipe.MinLength", 100.0)
+    controller.config.set("Gesture.Swipe.MinLength", 80.0)
     controller.config.set("Gesture.Swipe.MinVelocity", 750)
     controller.config.save()
 
@@ -111,6 +120,7 @@ def main():
     finally:
         # Remove the sample listener when done
         controller.remove_listener(listener)
+        s.close()
 
 if __name__ == "__main__":
     main()
