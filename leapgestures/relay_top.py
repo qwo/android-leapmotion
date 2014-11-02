@@ -7,4 +7,4 @@ device = MonkeyRunner.waitForConnection()
 
 device.wake()
 
-device.drag((100,400),(100,100),0.15,5)
+device.drag((100,500),(100,10),0.15,5)

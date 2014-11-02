@@ -11,4 +11,4 @@ device.wake()
 # drag (tuple start, tuple end, float duration, integer steps)
 
 # Left drag
-device.drag((400,100),(100,100),0.15,5)
+device.drag((400,400),(100,400),0.15,5)
