@@ -33,11 +33,11 @@ while 1:
     data = conn.recv(1024)
     if not data: break
     if(data == '0'):
-        print 'left'
-        device.drag((400,400),(100,400),0.15,5)
-    elif (data == '1'):
         print 'right'
         device.drag((100,400),(400,400),0.15,5)
+    elif (data == '1'):
+        print 'left'
+        device.drag((400,400),(100,400),0.15,5)
     elif (data == '2'):
         print 'up'
         device.drag((100,500),(100,10),0.15,5)
